@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+==- fiber_context.natvis - Visual Studio Fiber Views ===========================
+
+Copyright (c) 2026 Ian Pike
+Part of fiber_context, under the Apache License v2.0 with LLVM Exceptions.
+See LICENSE in the project root for license information.
+SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+================================================================================
+
+Displays fiber ownership and stack bounds alongside the saved registers in the
+Visual Studio debugger.
+
+================================================================================
+-->
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="stdx::@FIBER_CONTEXT_ABI_NAMESPACE@::fiber_context">
+    <AlternativeType Name="stdx::fiber_context" />
+    <DisplayString Condition="m_state == 0">empty</DisplayString>
+    <DisplayString Condition="m_state->owner == 0">not started, {*m_state}, context={static_cast&lt;const void*&gt;(m_state->active_stack)}</DisplayString>
+    <DisplayString>parked, {*m_state}, context={static_cast&lt;const void*&gt;(m_state->active_stack)}</DisplayString>
+    <Expand>
+      <Item Name="[owner]" Condition="m_state != 0">m_state->owner</Item>
+      <Item Name="[active context]" Condition="m_state != 0">m_state->active_stack</Item>
+      <ExpandedItem Condition="m_state != 0">*m_state->active_stack</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <Type Name="stdx::@FIBER_CONTEXT_ABI_NAMESPACE@::detail::fiber_state">
+    <AlternativeType Name="stdx::detail::fiber_state" />
+    <DisplayString Condition="active_stack != &amp;initial">cleanup stack {*active_stack}, owner={owner}</DisplayString>
+    <DisplayString Optional="true" Condition="!active_stack->registers.low &amp;&amp; !active_stack->registers.high">thread stack (bounds unknown), {active_stack->registers}, owner={owner}</DisplayString>
+    <DisplayString Optional="true" Condition="!active_stack->stack_low &amp;&amp; !active_stack->stack_high">thread stack (bounds unknown), {active_stack->registers}, owner={owner}</DisplayString>
+    <DisplayString>fiber stack {*active_stack}, owner={owner}</DisplayString>
+  </Type>
+
+  <Type Name="stdx::@FIBER_CONTEXT_ABI_NAMESPACE@::native::context">
+    <AlternativeType Name="stdx::native::context" />
+    <DisplayString Optional="true" Condition="registers.high &gt; registers.low">[{registers.low,x}, {registers.high,x}) ({registers.high - registers.low} bytes), {registers}</DisplayString>
+    <DisplayString Optional="true" Condition="stack_high &gt; stack_low">[{static_cast&lt;const void*&gt;(stack_low)}, {static_cast&lt;const void*&gt;(stack_high)}) ({stack_high - stack_low} bytes), {registers}</DisplayString>
+    <DisplayString>(bounds unknown), {registers}</DisplayString>
+    <Expand>
+      <Item Name="[stack low]" Optional="true">registers.low,x</Item>
+      <Item Name="[stack low]" Optional="true">static_cast&lt;const void*&gt;(stack_low)</Item>
+      <Item Name="[stack high]" Optional="true">registers.high,x</Item>
+      <Item Name="[stack high]" Optional="true">static_cast&lt;const void*&gt;(stack_high)</Item>
+      <Item Name="[saved SP]">registers.sp,x</Item>
+      <Item Name="[saved FP]" Optional="true">registers.rbp,x</Item>
+      <Item Name="[saved FP]" Optional="true">registers.x19_to_x29[10],x</Item>
+      <Item Name="[saved PC]">registers.pc,x</Item>
+      <Item Name="[registers]">registers</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="fiber_context_x86_record">
+    <DisplayString>sp={sp,x}, fp={rbp,x}, pc={pc,x}</DisplayString>
+  </Type>
+
+  <Type Name="fiber_context_arm_record">
+    <DisplayString>sp={sp,x}, fp={x19_to_x29[10],x}, pc={pc,x}</DisplayString>
+  </Type>
+</AutoVisualizer>

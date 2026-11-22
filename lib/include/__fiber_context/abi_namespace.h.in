@@ -1,0 +1,16 @@
+//==- abi_namespace.h - Configured ABI Namespace ---------------------------==//
+//
+// Copyright (c) 2026 Ian Pike
+// Part of fiber_context, under the Apache License v2.0 with LLVM Exceptions.
+// See LICENSE in the project root for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+//
+// Names the inline namespace selected when configuring the library.
+//
+//===----------------------------------------------------------------------===//
+
+#pragma once
+
+#define INTERNAL_CONFIG_STDX_FIBER_CONTEXT_ABI_NAMESPACE @FIBER_CONTEXT_ABI_NAMESPACE@

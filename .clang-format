@@ -1,0 +1,56 @@
+---
+Language: Cpp
+BasedOnStyle: LLVM
+ColumnLimit: 160
+IndentWidth: 4
+ContinuationIndentWidth: 4
+TabWidth: 4
+UseTab: Never
+NamespaceIndentation: All
+AccessModifierOffset: -4
+IndentCaseLabels: true
+IndentPPDirectives: BeforeHash
+IndentRequiresClause: true
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: true
+  BeforeWhile: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: Never
+
+AlignAfterOpenBracket: DontAlign
+AlignConsecutiveAssignments: Consecutive
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 0
+BinPackArguments: false
+BreakConstructorInitializers: AfterColon
+BreakTemplateDeclarations: Yes
+PointerAlignment: Right
+ReferenceAlignment: Pointer
+SpaceAfterTemplateKeyword: false
+SpaceBeforeRangeBasedForLoopColon: false
+
+IncludeBlocks: Preserve
+ReflowComments: false
+FixNamespaceComments: false
+InsertNewlineAtEOF: true
+Macros:
+  - STDX_FIBER_CONTEXT_NAMESPACE=namespace stdx
+AttributeMacros:
+  - FIBER_CONTEXT_NO_ASAN
+  - FIBER_CONTEXT_USED_IMPLICITLY
+  - INTERNAL_STDX_FIBER_CONTEXT_API
+  - INTERNAL_STDX_FIBER_CONTEXT_HIDDEN
